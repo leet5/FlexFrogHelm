@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flex-frog-bot
+  namespace: {{ .Values.namespace }}
+spec:
+  type: NodePort
+  selector:
+    app: flex-frog-bot
+  ports:
+    - port: {{ .Values.bot.port }}
+      targetPort: {{ .Values.bot.port }}
+      protocol: TCP
+      nodePort: {{ .Values.bot.nodePort }}

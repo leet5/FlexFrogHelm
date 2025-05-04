@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flex-frog-engine
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flex-frog-engine
+  template:
+    metadata:
+      labels:
+        app: flex-frog-engine
+    spec:
+      containers:
+        - name: engine
+          image: "{{ .Values.engine.image }}:{{ .Values.image.tag }}"
+          env:
+            - name: DB_HOST
+              value: flex-frog-db
+            - name: DB_PORT
+              value: "{{ .Values.postgres.port }}"
+            - name: DB_USER
+              value: "{{ .Values.postgres.user }}"
+            - name: DB_PASSWORD
+              value: "{{ .Values.postgres.password }}"
+            - name: DB_NAME
+              value: "{{ .Values.postgres.db }}"
+          volumeMounts:
+            - name: hf-data
+              mountPath: /cache/transformers
+            - name: hf-data
+              mountPath: /cache/torch
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: hf-data
+          persistentVolumeClaim:
+            claimName: hf-data-pvc

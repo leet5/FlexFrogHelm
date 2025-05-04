@@ -1,0 +1,35 @@
+namespace: flexfrog
+image:
+  tag: latest
+
+postgres:
+  image: postgres:17.4
+  user: admin
+  password: admin
+  db: flex_frog_db
+  port: 5432
+  volume: db-data
+  pv:
+    storageClass: postgres
+    storageCapacity: 5Gi
+
+bot:
+  image: leet5/flex-frog-bot
+  port: 8080
+  nodePort: 30001
+  token:
+
+ui:
+  image: leet5/flex-frog-ui
+  port: 5173
+  nodePort: 30002
+  env:
+    VITE_BACKEND_URL: https://flexfrog.ddns.net
+
+engine:
+  image: leet5/flex-frog-engine
+  pv:
+    storageClass: engine
+    storageCapacity: 5Gi
+
+

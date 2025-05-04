@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flex-frog-db
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flex-frog-db
+  template:
+    metadata:
+      labels:
+        app: flex-frog-db
+    spec:
+      containers:
+        - name: db
+          image: {{ .Values.postgres.image }}
+          ports:
+            - containerPort: {{ .Values.postgres.port }}
+          env:
+            - name: POSTGRES_USER
+              value: "{{ .Values.postgres.user }}"
+            - name: POSTGRES_PASSWORD
+              value: "{{ .Values.postgres.password }}"
+            - name: POSTGRES_DB
+              value: "{{ .Values.postgres.db }}"
+          volumeMounts:
+            - name: "{{ .Values.postgres.volume }}"
+              mountPath: /var/lib/postgresql/data
+            - name: db-init-script
+              mountPath: /docker-entrypoint-initdb.d/init.sql
+              subPath: init.sql
+              readOnly: true
+      volumes:
+        - name: "{{ .Values.postgres.volume }}"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.postgres.volume }}"
+        - name: db-init-script
+          configMap:
+            name: db-init-sql
+            items:
+              - key: init.sql
+                path: init.sql
+
+

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flex-frog-ui
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flex-frog-ui
+  template:
+    metadata:
+      labels:
+        app: flex-frog-ui
+    spec:
+      containers:
+        - name: ui
+          image: {{ .Values.ui.image }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.ui.port }}
+          env:
+            - name: VITE_BACKEND_URL
+              value: "{{ .Values.ui.env.VITE_BACKEND_URL }}"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+

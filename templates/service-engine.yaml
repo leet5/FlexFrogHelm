@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flex-frog-engine
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: flex-frog-engine
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

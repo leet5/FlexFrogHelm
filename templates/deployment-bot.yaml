@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flex-frog-bot
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flex-frog-bot
+  template:
+    metadata:
+      labels:
+        app: flex-frog-bot
+    spec:
+      containers:
+        - name: bot
+          image: {{ .Values.bot.image }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.bot.port }}
+          env:
+            - name: BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: bot-token-secret
+                  key: BOT_TOKEN
+            - name: DB_HOST
+              value: flex-frog-db
+            - name: DB_PORT
+              value: "{{ .Values.postgres.port }}"
+            - name: DB_USER
+              value: "{{ .Values.postgres.user }}"
+            - name: DB_PASSWORD
+              value: "{{ .Values.postgres.password }}"
+            - name: DB_NAME
+              value: "{{ .Values.postgres.db }}"
+
