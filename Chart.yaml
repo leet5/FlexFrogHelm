@@ -3,4 +3,4 @@ name: flex-frog
 description: Helm chart for Flex Frog app
 version: 0.1.0
 appVersion: 0.0.7
-icon: https://github.com/leet5/FlexFrogBot/raw/main/img.png
+icon: https://github.com/leet5/FlexFrogHelm/blob/main/icon.png
