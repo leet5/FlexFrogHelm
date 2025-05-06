@@ -9,10 +9,11 @@ CREATE TABLE users
 -- Chats table: stores unique Telegram chat IDs and chat data
 CREATE TABLE chats
 (
-    id        BIGINT PRIMARY KEY,
-    name      TEXT  NOT NULL CHECK (char_length(name) > 0),
-    thumbnail BYTEA NOT NULL,
-    watched   BOOLEAN DEFAULT FALSE
+    id         BIGINT PRIMARY KEY,
+    name       TEXT  NOT NULL CHECK (char_length(name) > 0),
+    thumbnail  BYTEA NOT NULL,
+    watched    BOOLEAN DEFAULT FALSE,
+    is_private BOOLEAN DEFAULT FALSE
 );
 
 -- UsersChats table: many-to-many relationship between users and chats
