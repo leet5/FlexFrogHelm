@@ -10,7 +10,8 @@ CREATE TABLE users
 CREATE TABLE chats
 (
     id         BIGINT PRIMARY KEY,
-    name       TEXT  NOT NULL CHECK (char_length(name) > 0),
+    title      TEXT  NOT NULL CHECK (char_length(title) > 0),
+    username   TEXT,
     thumbnail  BYTEA NOT NULL,
     watched    BOOLEAN DEFAULT FALSE,
     is_private BOOLEAN DEFAULT FALSE
